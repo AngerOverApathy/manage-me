@@ -45,8 +45,16 @@ function promptQuestions() {
         name: 'query',
         message: 'Please select what you would like to do:',
         choices: [
-            'View all employees',
-            ''
-        ]
+            "View all departments",
+            "Add a new department",
+            "View all roles",
+            "Add a new role",
+            "View all employees",
+            "View employees by department",
+            "View employees by manager",
+            "Add an employee",
+            "Update an employee's role",
+            "Exit"
+         ]
     })
 }
