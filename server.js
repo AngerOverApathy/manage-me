@@ -34,8 +34,8 @@ connection.connect(function (err) {
     \|_______| \|__|\|__|     \|__|   \|__|\|__| \|_______| \|__|\|__||\_________\\|_______|                     
                                                                       \|_________|                               
                                                                                         `)
-    //questions function                        
-    promptQuestions();                                                                                    
+//inquirer-questions function                        
+promptQuestions();                                                                                    
 });
 
 //begin inquirer
@@ -56,5 +56,48 @@ function promptQuestions() {
             "Update an employee's role",
             "Exit"
          ]
+    })
+    .then(function ({ query }) {
+        switch(query) {
+            case "View all departments":
+                viewDepartments();
+                break;
+            
+            case "Add a new department":
+                addDepartments();
+                break;
+
+            case "View all roles":
+                viewRoles();
+                break;
+            
+            case "Add a new role":
+                addRole();
+                break;
+
+            case "View all employees":
+                viewEmployees();
+                break;
+
+            case "View employees by department":
+                viewEmpDepartments();
+                break;
+
+            case "View employees by manager":
+                viewEmpManagers();
+                break;
+
+            case "Add an employee":
+                addEmployee();
+                break;
+
+            case "Update an employee's role":
+                updateRole();
+                break;
+
+            case "Exit":
+                connection.end();
+                break;
+        }
     })
 }
