@@ -1,4 +1,4 @@
-USE manageMe;
+USE manageMe_db;
 
 INSERT INTO department (name)
 VALUES

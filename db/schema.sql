@@ -2,6 +2,10 @@ DROP DATABASE IF EXISTS manageMe_db;
 CREATE DATABASE manageMe_db;
 USE manageMe_db;
 
+DROP TABLE IF EXISTS department;
+DROP TABLE IF EXISTS role;
+DROP TABLE IF EXISTS employee;
+
 CREATE TABLE department (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(30) NOT NULL
@@ -23,6 +27,6 @@ CREATE TABLE employee (
     role_id int,
     manager_id int,
     FOREIGN KEY (role_id) REFERENCES role(id)
-     ON DELETE SET NULL,
+    ON DELETE SET NULL,
     FOREIGN KEY (manager_id) REFERENCES employee(id) ON DELETE SET NULL
 );
