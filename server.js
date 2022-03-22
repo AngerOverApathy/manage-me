@@ -7,8 +7,9 @@ const cTable = require('console.table')
 const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: 'password123',
-    database: 'manageMe_db'
+    password: 'password',
+    database: 'manageMe',
+    port: 3505
 });
 
 connection.connect(function (err) {
@@ -42,7 +43,7 @@ promptQuestions();
 function promptQuestions() {
     inquirer.prompt({
         type: 'list',
-        name: 'query',
+        name: 'prompts',
         message: 'Please select what you would like to do:',
         choices: [
             "View all departments",
@@ -57,8 +58,8 @@ function promptQuestions() {
             "Exit"
          ]
     })
-    .then(function ({ query }) {
-        switch(query) {
+    .then(function ({ prompts }) {
+        switch(prompts) {
             case "View all departments":
                 viewDepartments();
                 break;
@@ -101,3 +102,35 @@ function promptQuestions() {
         }
     })
 }
+
+function viewDepartments() {
+    let departments;
+    connection.query("SELECT id, name FROM department", (err, res) => {
+        if (err) throw err;
+        departments = res;
+        console.log(departments)
+    })
+}
+
+async function addDepartments() {
+    console.log('Adding a new department!')
+    let newDepartment = await inquirer.prompt(getDepartment());
+
+}
+
+function getDepartment() {
+    return ([
+        {
+            name: "department name",
+            type: "input",
+            message: "Please name your new department."
+        }
+    ])
+    .then(function(answer) {
+        connection.query(`INSERT INTO department (name) VALUES ('${answer.department}')`, (err,res) => {
+            if (err) throw err;
+            console.log(`Your new department, ${answer.department}, has been created.`)
+        })
+    })
+}
+
