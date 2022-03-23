@@ -7,9 +7,8 @@ const cTable = require('console.table')
 const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: 'password',
-    database: 'manageMe',
-    port: 3505
+    password: '1qaz!QAZ',
+    database: 'manageMe_db'
 });
 
 connection.connect(function (err) {
@@ -103,34 +102,136 @@ function promptQuestions() {
     })
 }
 
+//see current departments
 function viewDepartments() {
     let departments;
     connection.query("SELECT id, name FROM department", (err, res) => {
         if (err) throw err;
         departments = res;
         console.log(departments)
+        promptQuestions();
     })
 }
 
-async function addDepartments() {
+//add new department
+function addDepartments(department) {
     console.log('Adding a new department!')
-    let newDepartment = await inquirer.prompt(getDepartment());
-
-}
-
-function getDepartment() {
-    return ([
+    inquirer.prompt([
         {
-            name: "department name",
+            name: "department",
             type: "input",
             message: "Please name your new department."
         }
     ])
     .then(function(answer) {
-        connection.query(`INSERT INTO department (name) VALUES ('${answer.department}')`, (err,res) => {
-            if (err) throw err;
-            console.log(`Your new department, ${answer.department}, has been created.`)
+    connection.query(`INSERT INTO department (name) VALUES ('${answer.department}')`, (err,res) => {
+        if (err) throw err;
+        console.log(`Your new department, ${answer.department}, has been created.`)
+        promptQuestions();
+    })
+})
+}
+
+//view roles
+function viewRoles() {
+    let roles;
+    connection.query("SELECT role.id, role.title AS role, role.salary FROM role", (err, res) => {
+        if (err) throw err;
+        roles = res;
+        console.table(roles);
+    })
+}
+
+// add a new role
+function addRole() {
+    console.log('Creating a new role!');
+    connection.query('SELECT * FROM department', function(err, res) {
+        let departments = res.map(({id, name}) => ({
+            name: name,
+            value: id
+        }))
+
+        inquirer.prompt([
+            {
+                type: 'input',
+                name: 'departmentName',
+                message: 'What is the title of the new role?'
+            },
+            {
+                type: 'input',
+                name: 'departmentSalary',
+                message: 'What is the salary of the new role?'
+            },
+            {
+                type: 'list',
+                name: 'departmentId',
+                message: 'What department does this new role belong to?',
+                choices: departments
+            }
+        ])
+        .then(answer => {
+            let role = {
+                title: answer.departmentName,
+                salary: answer.departmentSalary,
+                department_id: answer.departmentId
+            }
+                connection.query('INSERT INTO role SET ?', role, function(err, res) {
+                    if (err) throw err;
+                })
+        })
+    })
+
+}
+
+function updateRole() {
+    connection.query('SELECT * FROM employee', function(err, res) {
+        let employees = res.map(({first_name, last_name, id}) => ({
+            name: `${first_name} ${last_name}`,
+            value: id
+        }))
+        inquirer.prompt([
+            {
+                type: 'list',
+                name: 'employeeId',
+                message: 'What  employee would you like to update?',
+                choices: employees
+            }
+        ])  
+        .then(res => {
+            let employeeId = res.employeeId;
+            connection.query('SELECT * FROM role', function(err, res) {
+                let roles = res.map(({title, id}) => ({
+                    name: title,
+                    value: id
+                }));
+
+                inquirer.prompt([
+                    {
+                        type: 'list',
+                        name: 'roleId',
+                        message: 'What  role would you like to update?',
+                        choices: roles
+                    }
+                ])  
+                .then(res => {
+                    connection.query(`UPDATE employee SET role_id = ${res.roleId} WHERE id =${employeeId}`, function(err, res) {
+                        if(err) throw err;
+                        console.log(res)
+                    })
+                })
+            })
+
         })
     })
 }
 
+
+
+
+
+
+// viewEmployees();
+// viewEmpDepartments();
+// viewEmpManagers();
+// addEmployee();
+// updateRole();
