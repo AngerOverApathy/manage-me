@@ -198,21 +198,27 @@ function viewEmployees() {
     })
 }
 
-// view employees by departments;
+// view employees by departments //HELP
 function viewEmpDepartments() {
     console.log('Viewing employees by departments.')
     let departments;
-    connection.query(`SELECT department.id, department.name, role.salary AS budget FROM employee`)
+    connection.query(`SELECT department.id, department.name AS department FROM department`)
+    departments = res
+    console.table(res)
     promptQuestions();
 }
 
 
-// view employees by managers
+// view employees by managers 
 function viewEmpManagers() {
     console.log('Viewing employees by manager!')
     let managers;
-    connection.query(`SELECT id, first_name, last_name, CONCAT_WS(' ', first_name, last_name) AS managers FROM employee
-                      ORDER BY managers`, (err, res) => {
+    connection.query(`SELECT CONCAT(manager.first_name, ' ', manager.last_name) AS manager, department.name AS department, employee.id, employee.first_name, employee.last_name, role.title
+                     FROM employee
+                     LEFT JOIN employee manager on manager.id = employee.manager_id
+                     INNER JOIN role ON (role.id = employee.role_id && employee.manager_id != 'NULL')
+                     INNER JOIN department ON (department.id = role.department_id)
+                     ORDER BY manager`, (err, res) => {
         if (err) throw err;
         managers = res;
         console.table(managers);
@@ -220,7 +226,7 @@ function viewEmpManagers() {
   })
 };
 
-// add employee
+// add employee //HELP
 function addEmployee() {
     console.log('Adding a new employee!');
     connection.query('SELECT * FROM employee', function(err, res) {
