@@ -104,6 +104,7 @@ function promptQuestions() {
 
 //see current departments
 function viewDepartments() {
+    console.log('Viewing departments!')
     let departments;
     connection.query("SELECT id, name FROM department", (err, res) => {
         if (err) throw err;
@@ -134,11 +135,13 @@ function addDepartments(department) {
 
 //view roles
 function viewRoles() {
+    console.log('Viewing roles!')
     let roles;
     connection.query("SELECT role.id, role.title AS role, role.salary FROM role", (err, res) => {
         if (err) throw err;
         roles = res;
         console.table(roles);
+        promptQuestions();
     })
 }
 
@@ -183,6 +186,91 @@ function addRole() {
 
 }
 
+// view employees
+function viewEmployees() {
+    console.log('Viewing employees!')
+    let employees;
+    connection.query(`SELECT employee.id, role_id, CONCAT_WS(' ', first_name, last_name) AS Employee_Name, manager_id FROM employee`, (err, res) => {
+        if (err) throw err;
+        employees = res;
+        console.table(res);
+        promptQuestions();
+    })
+}
+
+// view employees by departments;
+function viewEmpDepartments() {
+    console.log('Viewing employees by departments.')
+    let departments;
+    connection.query(`SELECT department.id, department.name, role.salary AS budget FROM employee`)
+    promptQuestions();
+}
+
+
+// view employees by managers
+function viewEmpManagers() {
+    console.log('Viewing employees by manager!')
+    let managers;
+    connection.query(`SELECT id, first_name, last_name, CONCAT_WS(' ', first_name, last_name) AS managers FROM employee
+                      ORDER BY managers`, (err, res) => {
+        if (err) throw err;
+        managers = res;
+        console.table(managers);
+        promptQuestions();
+  })
+};
+
+// add employee
+function addEmployee() {
+    console.log('Adding a new employee!');
+    connection.query('SELECT * FROM employee', function(err, res) {
+        let employee = res.map(({id, first_name, last_name, manager_id}) => ({
+            first_name: firstName,
+            last_name: last_name,
+            department: name,
+            role: title,
+            value: id
+        }))
+
+        inquirer.prompt([
+            {
+                type: 'input',
+                name: 'firstName',
+                message: 'What is the first name of the employee?'
+            },
+            {
+                type: 'input',
+                name: 'lastName',
+                message: 'What is the last name of the new employee?'
+            },
+            {
+                type: 'list',
+                name: 'departmentId',
+                message: 'What department does this new employee belong to?',
+                choices: departments
+            },
+            {
+                type: 'list',
+                name: 'roleId',
+                message: 'What department role does this new employee have?',
+                choices: role
+            }
+        ])
+        .then(answer => {
+            let employee = {
+                title: answer.departmentName,
+                salary: answer.departmentSalary,
+                department_id: answer.departmentId
+            }
+                connection.query('INSERT INTO employee SET ?', role, function(err, res) {
+                    if (err) throw err;
+                })
+        })
+    })
+
+}
+
+// update role
 function updateRole() {
     connection.query('SELECT * FROM employee', function(err, res) {
         let employees = res.map(({first_name, last_name, id}) => ({
@@ -224,14 +312,3 @@ function updateRole() {
         })
     })
 }
-
-
-
-
-
-
-// viewEmployees();
-// viewEmpDepartments();
-// viewEmpManagers();
-// addEmployee();
-// updateRole();
