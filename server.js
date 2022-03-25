@@ -198,16 +198,20 @@ function viewEmployees() {
     })
 }
 
-// view employees by departments //HELP
+// view employees by departments 
 function viewEmpDepartments() {
     console.log('Viewing employees by departments.')
     let departments;
-    connection.query(`SELECT department.id, department.name AS department FROM department`)
+    connection.query(`SELECT department.name AS department, role.title, employee.id, employee.first_name, employee.last_name
+                      FROM employee
+                      LEFT JOIN role ON (role.id = employee.role_id)
+                      LEFT JOIN department ON (department.id = role.department_id)
+                      ORDER BY department.name`, (err,res) => {
     departments = res
     console.table(res)
     promptQuestions();
+    })
 }
-
 
 // view employees by managers 
 function viewEmpManagers() {
@@ -229,47 +233,45 @@ function viewEmpManagers() {
 // add employee //HELP
 function addEmployee() {
     console.log('Adding a new employee!');
-    connection.query('SELECT * FROM employee', function(err, res) {
-        let employee = res.map(({id, first_name, last_name, manager_id}) => ({
-            first_name: firstName,
-            last_name: last_name,
-            department: name,
-            role: title,
+    connection.query('SELECT employee.id, employee.first_name, employee.last_name, employee.role_id, employee.manager_id FROM employee', function(err, res) {
+        let employee = res.map(({id, first_name, last_name, role_id, manager_id}) => ({
+            name: `${first_name} ${last_name}`,
             value: id
         }))
 
         inquirer.prompt([
             {
                 type: 'input',
-                name: 'firstName',
+                name: 'first_name',
                 message: 'What is the first name of the employee?'
             },
             {
                 type: 'input',
-                name: 'lastName',
+                name: 'last_name',
                 message: 'What is the last name of the new employee?'
             },
             {
-                type: 'list',
-                name: 'departmentId',
-                message: 'What department does this new employee belong to?',
-                choices: departments
+                type: "input",
+                message: "What is the employee's role id number?",
+                name: "role_id"
             },
             {
-                type: 'list',
-                name: 'roleId',
-                message: 'What department role does this new employee have?',
-                choices: role
+                type: "list",
+                message: "What is the manager id number?",
+                name: "manager_id",
+                choices: employee
             }
         ])
         .then(answer => {
             let employee = {
-                title: answer.departmentName,
-                salary: answer.departmentSalary,
-                department_id: answer.departmentId
+                first_name: answer.first_name,
+                last_name: answer.last_name,
+                role_id: answer.role_id,
+                manager_id: answer.manager_id
             }
-                connection.query('INSERT INTO employee SET ?', role, function(err, res) {
+                connection.query('INSERT INTO employee SET ?', employee, function(err, res) {
                     if (err) throw err;
+                    promptQuestions();
                 })
         })
     })
@@ -278,6 +280,7 @@ function addEmployee() {
 
 // update role
 function updateRole() {
+    console.log('Updating a role!')
     connection.query('SELECT * FROM employee', function(err, res) {
         let employees = res.map(({first_name, last_name, id}) => ({
             name: `${first_name} ${last_name}`,
@@ -311,7 +314,9 @@ function updateRole() {
                     connection.query(`UPDATE employee SET role_id = ${res.roleId} WHERE id =${employeeId}`, function(err, res) {
                         if(err) throw err;
                         console.log(res)
+                        promptQuestions();
                     })
+                    
                 })
             })
 
