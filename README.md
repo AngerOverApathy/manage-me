@@ -22,9 +22,8 @@ https://angeroverapathy.github.io/commerce-compete/
 
 ## Features <a name="features"/>
 Sample:
-![pic1](https://user-images.githubusercontent.com/92872122/160209571-ceb8b0fd-0832-4ef4-ad64-a7b3de283f80.png)
-
-![pic2](https://user-images.githubusercontent.com/92872122/160209575-f08beb1a-ebd1-470b-bcb7-b20c7a0e1584.png)
+![pic](https://user-images.githubusercontent.com/92872122/160209669-86d496b0-8aee-4807-a9bd-4aa0a4e19452.PNG)
+![pic2](https://user-images.githubusercontent.com/92872122/160209672-8eaf66ff-a02a-4576-a245-33fbd97f21c2.PNG)
 
 
 <br/>
