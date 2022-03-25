@@ -22,9 +22,12 @@ https://angeroverapathy.github.io/manage-me/
 
 ## Features <a name="features"/>
 Sample screenshots:
-![pic1](https://user-images.githubusercontent.com/92872122/160193598-338236d7-87fe-4ab9-b33e-c3fd10f7036b.png)
+![pic1](https://user-images.githubusercontent.com/92872122/160193904-6b8f905e-bb7e-4ef5-9648-480ae001ea8e.PNG)
 
-![pic2](https://user-images.githubusercontent.com/92872122/160193604-557f3928-1693-4d42-a68e-c812578b682d.png)
+![pic2](https://user-images.githubusercontent.com/92872122/160193911-83180685-262b-445f-b8c5-5be044203754.PNG)
+
+Video demo:
+<iframe src="https://drive.google.com/file/d/1iUZAQvmn2Zm22J9FEy2G4aPhwIdOiC_3/preview" width="640" height="480"></iframe>
 
 
 <br/>
