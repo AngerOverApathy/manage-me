@@ -1,4 +1,4 @@
-# Manage Me Database
+# Commerce Compete
 
 ## Table of Contents
 1. [Description](#description)
@@ -10,30 +10,27 @@
 <br/>
 
 ## Description <a name="description"/>
-Make tracking employees easy with this MySQL employee tracker. View all of your employees by department or manager, and see their roles, departments, salaries, and titles. Add as many employees, roles, and departments as you need!
+The back-end for an e-commerce site. Make it easy to keep track of stock, create, update, and delete products!
 
 <br/>
 
 ## Link <a name="link"/>
-https://angeroverapathy.github.io/manage-me/
+https://angeroverapathy.github.io/commerce-compete/
 
 
 <br/>
 
 ## Features <a name="features"/>
-Sample screenshots:
-![pic1](https://user-images.githubusercontent.com/92872122/160193904-6b8f905e-bb7e-4ef5-9648-480ae001ea8e.PNG)
+Sample:
+![pic1](https://user-images.githubusercontent.com/92872122/160209571-ceb8b0fd-0832-4ef4-ad64-a7b3de283f80.png)
 
-![pic2](https://user-images.githubusercontent.com/92872122/160193911-83180685-262b-445f-b8c5-5be044203754.PNG)
-
-Video demo:
-<iframe src="https://drive.google.com/file/d/1iUZAQvmn2Zm22J9FEy2G4aPhwIdOiC_3/preview" width="640" height="480"></iframe>
+![pic2](https://user-images.githubusercontent.com/92872122/160209575-f08beb1a-ebd1-470b-bcb7-b20c7a0e1584.png)
 
 
 <br/>
 
 ## Usage <a name="usage"/>
-Ensure Node.js is installed. Clone the repo. Start the application by typing "node server.js" into the CLI.
+Ensure Node.js, Express.j, MySQL, and Sequelize are installed. Clone the repo.
 
 
 <br/>
